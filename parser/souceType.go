@@ -1,14 +1,14 @@
 package parser
 
 // SourceType source type of nodejs download url
-type SourceType int
+type SourceType string
 
 const (
-    UNKNOWN SourceType = iota
+    Unknown SourceType = ""
     // Standard e.g. https://nodejs.org/dist/
-    Standard
+    Standard SourceType = "standard"
     // Taobao e.g. https://registry.npmmirror.com/-/binary/node/
-    Taobao
+    Taobao SourceType = "taobao"
 )
 
 const (

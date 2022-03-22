@@ -23,13 +23,6 @@ type (
 )
 
 func FindAllValidVersions(url string, sourceType parser.SourceType) ([]*Version, error) {
-    if url == "" {
-        url = parser.DefaultSource
-    }
-    if sourceType == parser.UNKNOWN {
-        sourceType = parser.DefaultSourceType
-    }
-
     resp, err := http.Get(url)
     if err != nil {
         return nil, err
