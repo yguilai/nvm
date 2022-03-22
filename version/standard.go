@@ -16,7 +16,7 @@ func (s *StandardParser) GerVersions(resp *http.Response) ([]*Version, error) {
 	panic("implement me")
 }
 
-func (p *StandardParser) GetPackages(v *Version) ([]*Package, error) {
+func (p *StandardParser) GetPackages(v *Version, os, arch string) ([]*Package, error) {
 	//TODO implement me
 	panic("implement me")
 }

@@ -30,7 +30,6 @@ func TestFindAllValidPackages(t *testing.T) {
 		fmt.Println("empty version")
 	}
 	lastVersion := versions[len(versions)-1]
-	dump.P(lastVersion)
 	packages, err := FindAllValidPackages(lastVersion, Taobao)
 	if err != nil {
 		panic(err)

@@ -6,7 +6,7 @@ import (
 
 type Parser interface {
 	GerVersions(resp *http.Response) ([]*Version, error)
-	GetPackages(v *Version) ([]*Package, error)
+	GetPackages(v *Version, os, arch string) ([]*Package, error)
 }
 
 var parserMap = make(map[SourceType]Parser)

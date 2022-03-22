@@ -1,6 +1,7 @@
 package version
 
 import (
+	"bufio"
 	"encoding/json"
 	"github.com/yguilai/sl"
 	"io/ioutil"
@@ -57,7 +58,7 @@ func (p *TaobaoParser) GerVersions(resp *http.Response) ([]*Version, error) {
 	return versions, nil
 }
 
-func (p *TaobaoParser) GetPackages(v *Version) ([]*Package, error) {
+func (p *TaobaoParser) GetPackages(v *Version, os, arch string) ([]*Package, error) {
 	if v == nil {
 		return nil, NilVersionErr
 	}
@@ -68,6 +69,17 @@ func (p *TaobaoParser) GetPackages(v *Version) ([]*Package, error) {
 	}
 	defer resp.Body.Close()
 	tbVersions, err := p.getTbVersions(resp)
+	if err != nil {
+		return nil, err
+	}
+
+	var sha *TbVersion
+	for _, tb := range tbVersions {
+		if tb.Name == SHASUMS256Filename {
+			sha = tb
+		}
+	}
+	sumsMap, err := p.getSHASUMS256Map(sha)
 	if err != nil {
 		return nil, err
 	}
@@ -86,6 +98,7 @@ func (p *TaobaoParser) GetPackages(v *Version) ([]*Package, error) {
 			return &Package{
 				Filename:    tb.Name,
 				DownloadUrl: tb.Url,
+				ShaSums:     sumsMap[tb.Name],
 			}
 		},
 	).CollectSlice()
@@ -104,6 +117,26 @@ func (p *TaobaoParser) getTbVersions(resp *http.Response) ([]*TbVersion, error) 
 		return nil, err
 	}
 	return tbVersions, nil
+}
+
+func (p *TaobaoParser) getSHASUMS256Map(tb *TbVersion) (map[string]string, error) {
+	if tb == nil {
+		return nil, NilSHASUMSErr
+	}
+	resp, err := http.Get(tb.Url)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	sumsMap := make(map[string]string)
+	scanner := bufio.NewScanner(resp.Body)
+	for scanner.Scan() {
+		text := scanner.Text()
+		splits := strings.Split(text, "  ")
+		sumsMap[splits[1]] = splits[0]
+	}
+	return sumsMap, nil
 }
 
 var _ Parser = (*TaobaoParser)(nil)

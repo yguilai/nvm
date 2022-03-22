@@ -2,6 +2,7 @@ package version
 
 import (
 	"net/http"
+	"runtime"
 	"strconv"
 	"strings"
 )
@@ -42,7 +43,7 @@ func FindAllValidPackages(v *Version, sourceType SourceType) ([]*Package, error)
 	if p == nil {
 		return nil, ParserNotFoundErr
 	}
-	return p.GetPackages(v)
+	return p.GetPackages(v, runtime.GOOS, runtime.GOARCH)
 }
 
 func GetSortByVersion(v string) (sort int) {
