@@ -9,4 +9,5 @@ var Commands = []*cli.Command{
 	lsRemoteCmd,
 	useCmd,
 	cleanCmd,
+	envCmd,
 }
