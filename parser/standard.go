@@ -6,7 +6,7 @@ import (
 )
 
 func init() {
-    version.RegisterParser(version.Standard, &StandardParser{})
+    RegisterParser(Standard, &StandardParser{})
 }
 
 type StandardParser struct {
@@ -22,4 +22,4 @@ func (p *StandardParser) GetPackages(v *version.Version) ([]*version.Package, er
     panic("implement me")
 }
 
-var _ version.Parser = (*StandardParser)(nil)
+var _ Parser = (*StandardParser)(nil)

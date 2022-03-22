@@ -1,6 +1,7 @@
 package version
 
 import (
+    "github.com/yguilai/nvm/parser"
     "net/http"
     "strconv"
     "strings"
@@ -19,21 +20,14 @@ type (
         ShaSums     string
         DownloadUrl string
     }
-
-    Parser interface {
-        GerVersions(resp *http.Response) ([]*Version, error)
-        GetPackages(v *Version) ([]*Package, error)
-    }
 )
 
-var parserMap = make(map[SourceType]Parser)
-
-func FindAllValidVersions(url string, sourceType SourceType) ([]*Version, error) {
+func FindAllValidVersions(url string, sourceType parser.SourceType) ([]*Version, error) {
     if url == "" {
-        url = defaultSource
+        url = parser.DefaultSource
     }
-    if sourceType == UNKNOWN {
-        sourceType = defaultSourceType
+    if sourceType == parser.UNKNOWN {
+        sourceType = parser.DefaultSourceType
     }
 
     resp, err := http.Get(url)
@@ -41,15 +35,11 @@ func FindAllValidVersions(url string, sourceType SourceType) ([]*Version, error)
         return nil, err
     }
     defer resp.Body.Close()
-    parser := parserMap[sourceType]
-    if parser == nil {
+    p := parser.LoadParser(sourceType)
+    if p == nil {
         return nil, ParserNotFoundErr
     }
-    return parser.GerVersions(resp)
-}
-
-func RegisterParser(st SourceType, parser Parser) {
-    parserMap[st] = parser
+    return p.GerVersions(resp)
 }
 
 func GetSortByVersion(v string) (sort int) {

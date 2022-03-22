@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-    version.RegisterParser(version.Taobao, &StandardParser{})
+    RegisterParser(Taobao, &StandardParser{})
 }
 
 type (
@@ -103,4 +103,4 @@ func (p *TaobaoParser) getTbVersions(resp *http.Response) ([]*TbVersion, error) 
     return tbVersions, nil
 }
 
-var _ version.Parser = (*TaobaoParser)(nil)
+var _ Parser = (*TaobaoParser)(nil)

@@ -1,4 +1,4 @@
-package version
+package parser
 
 // SourceType source type of nodejs download url
 type SourceType int
@@ -12,6 +12,6 @@ const (
 )
 
 const (
-    defaultSource     = "https://nodejs.org/dist/"
-    defaultSourceType = Standard
+    DefaultSource     = "https://nodejs.org/dist/"
+    DefaultSourceType = Standard
 )
