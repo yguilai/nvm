@@ -1,10 +1,10 @@
 package version
 
 import (
-	"fmt"
-	"testing"
+    "fmt"
+    "testing"
 )
 
-func TestGetSort(t *testing.T) {
-	fmt.Println(getSortByVersion("v9.7.1"))
+func TestGetSortByVersion(t *testing.T) {
+    fmt.Println(GetSortByVersion("v9.7.1"))
 }
