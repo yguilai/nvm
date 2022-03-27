@@ -39,7 +39,8 @@ func (p *TaobaoParser) GerVersions(resp *http.Response) ([]*Version, error) {
 		sl.Filter(
 			sl.Stream(tbVersions),
 			func(v *TbVersion) bool {
-				if strings.Index(v.Name, "v") == 0 && v.Type == "dir" {
+				// skip v0.x.x
+				if strings.Index(v.Name, "v") == 0 && v.Type == "dir" && !strings.Contains(v.Name, "v0.") {
 					return true
 				}
 				return false

@@ -12,6 +12,6 @@ const (
 )
 
 const (
-	DefaultSource     = "https://nodejs.org/dist/"
-	DefaultSourceType = Standard
+	DefaultSource     = "https://registry.npmmirror.com/-/binary/node/"
+	DefaultSourceType = Taobao
 )

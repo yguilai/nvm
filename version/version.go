@@ -48,11 +48,11 @@ func FindAllValidPackages(v *Version, sourceType SourceType) ([]*Package, error)
 
 func GetSortByVersion(v string) (sort int) {
 	verNums := strings.Split(v[1:], ".")
-	multiplier := 1000
+	multiplier := 10000
 	for _, ver := range verNums {
 		num, _ := strconv.Atoi(ver)
 		sort += num * multiplier
-		multiplier = multiplier / 10
+		multiplier = multiplier / 100
 	}
 	return sort
 }
