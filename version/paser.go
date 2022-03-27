@@ -1,12 +1,9 @@
 package version
 
-import (
-	"net/http"
-)
-
 type Parser interface {
-	GerVersions(resp *http.Response) ([]*Version, error)
+	GerVersions(source string) ([]*Version, error)
 	GetPackages(v *Version, os, arch string) ([]*Package, error)
+	GetShaSumsMap(url string) (map[string]string, error)
 }
 
 var parserMap = make(map[SourceType]Parser)

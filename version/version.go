@@ -1,7 +1,6 @@
 package version
 
 import (
-	"net/http"
 	"runtime"
 	"strconv"
 	"strings"
@@ -22,17 +21,12 @@ type (
 	}
 )
 
-func FindAllValidVersions(url string, sourceType SourceType) ([]*Version, error) {
-	resp, err := http.Get(url)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
+func FindAllValidVersions(source string, sourceType SourceType) ([]*Version, error) {
 	p := LoadParser(sourceType)
 	if p == nil {
 		return nil, ParserNotFoundErr
 	}
-	return p.GerVersions(resp)
+	return p.GerVersions(source)
 }
 
 func FindAllValidPackages(v *Version, sourceType SourceType) ([]*Package, error) {

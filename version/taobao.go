@@ -28,9 +28,12 @@ type (
 	}
 )
 
-const SHASUMS256Filename = "SHASUMS256.txt"
-
-func (p *TaobaoParser) GerVersions(resp *http.Response) ([]*Version, error) {
+func (p *TaobaoParser) GerVersions(source string) ([]*Version, error) {
+	resp, err := http.Get(source)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
 	tbVersions, err := p.getTbVersions(resp)
 	if err != nil {
 		return nil, err
@@ -40,7 +43,7 @@ func (p *TaobaoParser) GerVersions(resp *http.Response) ([]*Version, error) {
 			sl.Stream(tbVersions),
 			func(v *TbVersion) bool {
 				// skip v0.x.x
-				if strings.Index(v.Name, "v") == 0 && v.Type == "dir" && !strings.Contains(v.Name, "v0.") {
+				if strings.Index(v.Name, "v") == 0 && v.Type == "dir" && !strings.Contains(v.Name, skipVersionPrefix) {
 					return true
 				}
 				return false
@@ -76,11 +79,14 @@ func (p *TaobaoParser) GetPackages(v *Version, os, arch string) ([]*Package, err
 
 	var sha *TbVersion
 	for _, tb := range tbVersions {
-		if tb.Name == SHASUMS256Filename {
+		if tb.Name == shaSums256Filename {
 			sha = tb
 		}
 	}
-	sumsMap, err := p.getSHASUMS256Map(sha)
+	if sha == nil {
+		return nil, NilSHASUMSErr
+	}
+	sumsMap, err := p.GetShaSumsMap(sha.Url)
 	if err != nil {
 		return nil, err
 	}
@@ -120,11 +126,8 @@ func (p *TaobaoParser) getTbVersions(resp *http.Response) ([]*TbVersion, error) 
 	return tbVersions, nil
 }
 
-func (p *TaobaoParser) getSHASUMS256Map(tb *TbVersion) (map[string]string, error) {
-	if tb == nil {
-		return nil, NilSHASUMSErr
-	}
-	resp, err := http.Get(tb.Url)
+func (p *TaobaoParser) GetShaSumsMap(sumsUrl string) (map[string]string, error) {
+	resp, err := http.Get(sumsUrl)
 	if err != nil {
 		return nil, err
 	}

@@ -11,7 +11,7 @@ func TestGetSortByVersion(t *testing.T) {
 }
 
 func TestFindAllValidVersions(t *testing.T) {
-	versions, err := FindAllValidVersions("https://registry.npmmirror.com/-/binary/node/", Taobao)
+	versions, err := FindAllValidVersions("https://nodejs.org/dist/", Standard)
 	if err != nil {
 		panic(err)
 	}

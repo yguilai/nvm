@@ -10,8 +10,3 @@ const (
 	// Taobao e.g. https://registry.npmmirror.com/-/binary/node/
 	Taobao SourceType = "taobao"
 )
-
-const (
-	DefaultSource     = "https://registry.npmmirror.com/-/binary/node/"
-	DefaultSourceType = Taobao
-)
