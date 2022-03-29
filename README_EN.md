@@ -2,7 +2,7 @@
 
 一个Nodejs的版本管理器
 
-简体中文 | [English](./README_EN.md)
+[简体中文](./README.md) | English
 
 ### 安装
 
