@@ -1,10 +1,10 @@
 # nvm
 
-一个Nodejs的版本管理器
+a version manager for nodejs
 
 [简体中文](./README.md) | English
 
-### 安装
+### Install
 
 // ...
 
@@ -26,7 +26,7 @@
 
 - [ ] 完善文档
 
-### 示例
+### Example
 
 ##### ls
 

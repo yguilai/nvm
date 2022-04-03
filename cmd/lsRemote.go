@@ -13,7 +13,8 @@ var lsRemoteCmd = &cli.Command{
 	Usage: "listing all valid version of nodejs from remote server",
 	Action: func(ctx *cli.Context) error {
 		source, st := env.NvmSource()
-		verArr, err := version.FindAllValidVersions(source, st)
+		parser := version.LoadParser(st)
+		verArr, err := parser.GerVersions(source)
 		if err != nil {
 			return err
 		}

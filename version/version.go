@@ -1,7 +1,6 @@
 package version
 
 import (
-	"runtime"
 	"strconv"
 	"strings"
 )
@@ -20,25 +19,6 @@ type (
 		DownloadUrl string
 	}
 )
-
-func FindAllValidVersions(source string, sourceType SourceType) ([]*Version, error) {
-	p := LoadParser(sourceType)
-	if p == nil {
-		return nil, ParserNotFoundErr
-	}
-	return p.GerVersions(source)
-}
-
-func FindAllValidPackages(v *Version, sourceType SourceType) ([]*Package, error) {
-	if v == nil {
-		return nil, NilVersionErr
-	}
-	p := LoadParser(sourceType)
-	if p == nil {
-		return nil, ParserNotFoundErr
-	}
-	return p.GetPackages(v, runtime.GOOS, runtime.GOARCH)
-}
 
 func GetSortByVersion(v string) (sort int) {
 	verNums := strings.Split(v[1:], ".")
