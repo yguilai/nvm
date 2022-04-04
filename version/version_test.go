@@ -17,3 +17,19 @@ func TestLoadParser(t *testing.T) {
 		return ok
 	})
 }
+
+func TestIsVersionDir(t *testing.T) {
+	assert.Condition(t, func() bool {
+		ok, _ := IsVersionDir("v1.10.1")
+		return ok
+	})
+	assert.Condition(t, func() bool {
+		ok, _ := IsVersionDir("v1.10")
+		return ok
+	})
+	assert.Condition(t, func() bool {
+		// not support case
+		ok, _ := IsVersionDir("v1")
+		return !ok
+	})
+}

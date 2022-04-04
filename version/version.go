@@ -1,6 +1,7 @@
 package version
 
 import (
+	"regexp"
 	"strconv"
 	"strings"
 )
@@ -29,4 +30,11 @@ func GetSortByVersion(v string) (sort int) {
 		multiplier = multiplier / 100
 	}
 	return sort
+}
+
+// IsVersionDir verify name of a dir entry
+// the version dir name should be vX.X.X or vX.X
+// such as v1.17.1 or v1.17
+func IsVersionDir(dir string) (bool, error) {
+	return regexp.MatchString(`v[1-9]+\.[1-9]+(\.[1-9]+)?`, dir)
 }
